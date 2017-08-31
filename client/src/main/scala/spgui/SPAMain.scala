@@ -6,7 +6,7 @@ import org.scalajs.dom.document
 
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
-@JSExportTopLevel("SPAMain")
+@JSExport("SPAMain")
 object SPAMain extends JSApp {
   @JSExport
   override def main(): Unit = {
