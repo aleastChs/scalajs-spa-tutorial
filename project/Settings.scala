@@ -25,9 +25,9 @@ object Settings {
 
   /** Declare global dependency versions here to avoid mismatches in multi part dependencies */
   object versions {
-    lazy val scala = "2.11.11"
+    lazy val scala = "2.12.3"
     lazy val scalaDom = "0.9.2"
-    lazy val scalajsReact = "1.0.1"
+    lazy val scalajsReact = "1.1.0"
     lazy val scalaCSS = "0.5.3"
     lazy val log4js = "1.4.10"
     lazy val autowire = "0.2.6"
@@ -45,7 +45,7 @@ object Settings {
     lazy val scalaRX = "0.3.2"
     lazy val d3 = "0.3.4"
     lazy val scalaTest = "3.0.1"
-    lazy val playJson = "2.6.0"
+    lazy val playJson = "2.6.3"
     lazy val derivedCodecs = "4.0.0"
     lazy val scalaTime = "2.0.0-M12"
     lazy val parser = "1.0.5"

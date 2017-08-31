@@ -1,9 +1,6 @@
 import sbt.Keys._
 import sbt.Project.projectToRef
 
-
-
-
 // a special crossProject for configuring a JS/JVM/shared structure
 lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
   .settings(
