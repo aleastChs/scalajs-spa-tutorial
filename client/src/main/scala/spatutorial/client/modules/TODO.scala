@@ -21,11 +21,11 @@ object Todo {
 
   class Backend($: BackendScope[Props, State]) {
     def mounted(props: Props) =
-      // dispatch a message to refresh the todos, which will cause TodoStore to fetch todos from the server
+    // dispatch a message to refresh the todos, which will cause TodoStore to fetch todos from the server
       Callback.when(props.proxy().isEmpty)(props.proxy.dispatchCB(RefreshTodos))
 
     def editTodo(item: Option[TodoItem]) =
-      // activate the edit dialog
+    // activate the edit dialog
       $.modState(s => s.copy(selectedItem = item, showTodoForm = true))
 
     def todoEdited(item: TodoItem, cancelled: Boolean) = {
@@ -79,7 +79,7 @@ object TodoForm {
     }
 
     def formClosed(state: State, props: Props): Callback =
-      // call parent handler with the new item and whether form was OK or cancelled
+    // call parent handler with the new item and whether form was OK or cancelled
       props.submitHandler(state.item, state.cancelled)
 
     def updateDescription(e: ReactEventFromInput) = {
