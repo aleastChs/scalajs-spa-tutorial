@@ -22,22 +22,29 @@ object Settings {
 
   /** Declare global dependency versions here to avoid mismatches in multi part dependencies */
   object versions {
-    val scala = "2.11.11"
-    val scalaDom = "0.9.2"
-    val scalajsReact = "1.0.1"
-    val scalaCSS = "0.5.3"
-    val log4js = "1.4.10"
-    val autowire = "0.2.6"
-    val booPickle = "1.2.6"
-    val diode = "1.1.2"
-    val uTest = "0.4.7"
+    lazy val scala = "2.11.11"
+    lazy val scalaDom = "0.9.2"
+    lazy val scalajsReact = "1.0.1"
+    lazy val scalaCSS = "0.5.3"
+    lazy val log4js = "1.4.10"
+    lazy val autowire = "0.2.6"
+    lazy val booPickle = "1.2.6"
+    lazy val diode = "1.1.2"
+    lazy val uTest = "0.4.7"
 
-    val react = "15.5.4"
-    val jQuery = "1.11.1"
-    val bootstrap = "3.3.6"
-    val chartjs = "2.1.3"
+    lazy val react = "15.5.4"
+    lazy val jQuery = "1.11.1"
+    lazy val bootstrap = "3.3.6"
+    lazy val chartjs = "2.1.3"
 
-    val scalajsScripts = "1.0.0"
+    lazy val scalajsScripts = "1.0.0"
+
+    lazy val scalaRX = "0.3.2"
+    lazy val d3 = "0.3.4"
+    lazy val scalaTest = "3.0.1"
+    lazy val playJson = "2.6.0"
+    lazy val derivedCodecs = "4.0.0"
+    lazy val scalaTime = "2.0.0-M12"
   }
 
   /**
@@ -54,17 +61,31 @@ object Settings {
     "com.vmunier" %% "scalajs-scripts" % versions.scalajsScripts,
     "org.webjars" % "font-awesome" % "4.3.0-1" % Provided,
     "org.webjars" % "bootstrap" % versions.bootstrap % Provided,
-    "com.lihaoyi" %% "utest" % versions.uTest % Test
+    "com.lihaoyi" %% "utest" % versions.uTest % Test,
+    "org.scalatest" %%% "scalatest" % versions.scalaTest % "test"
   ))
+
+
+
 
   /** Dependencies only used by the JS project (note the use of %%% instead of %%) */
   val scalajsDependencies = Def.setting(Seq(
     "com.github.japgolly.scalajs-react" %%% "core" % versions.scalajsReact,
     "com.github.japgolly.scalajs-react" %%% "extra" % versions.scalajsReact,
+    "com.github.japgolly.scalacss" %%% "core" % versions.scalaCSS,
     "com.github.japgolly.scalacss" %%% "ext-react" % versions.scalaCSS,
     "io.suzaku" %%% "diode" % versions.diode,
     "io.suzaku" %%% "diode-react" % versions.diode,
+
+    "com.lihaoyi" %%% "scalarx" % versions.scalaRX,
+    "org.singlespaced" %%% "scalajs-d3" % versions.d3,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
+    "io.github.cquiroz" %%% "scala-java-time" % versions.scalaTime,
+
+    "com.typesafe.play" %%% "play-json" % versions.playJson,
+    "org.julienrf" %%% "play-json-derived-codecs" % versions.derivedCodecs,
+
+    "org.scalatest" %%% "scalatest" % versions.scalaTest % "test",
     "com.lihaoyi" %%% "utest" % versions.uTest % Test
   ))
 
