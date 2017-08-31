@@ -2,9 +2,9 @@ import sbt._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 
 /**
- * Application settings. Configure the build for your application here.
- * You normally don't have to touch the actual build definition after this.
- */
+  * Application settings. Configure the build for your application here.
+  * You normally don't have to touch the actual build definition after this.
+  */
 object Settings {
   /** The name of your application */
   val name = "scalajs-spa"
@@ -17,7 +17,10 @@ object Settings {
     "-Xlint",
     "-unchecked",
     "-deprecation",
-    "-feature"
+    "-feature",
+    "-encoding", "utf8",
+    "-language:implicitConversions",
+    "-language:postfixOps"
   )
 
   /** Declare global dependency versions here to avoid mismatches in multi part dependencies */
@@ -48,9 +51,9 @@ object Settings {
   }
 
   /**
-   * These dependencies are shared between JS and JVM projects
-   * the special %%% function selects the correct version for each project
-   */
+    * These dependencies are shared between JS and JVM projects
+    * the special %%% function selects the correct version for each project
+    */
   val sharedDependencies = Def.setting(Seq(
     "com.lihaoyi" %%% "autowire" % versions.autowire,
     "io.suzaku" %%% "boopickle" % versions.booPickle
