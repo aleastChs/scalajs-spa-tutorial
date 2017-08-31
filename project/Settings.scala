@@ -17,10 +17,11 @@ object Settings {
     "-Xlint",
     "-unchecked",
     "-deprecation",
-    "-feature",
-    "-encoding", "utf8",
-    "-language:implicitConversions",
-    "-language:postfixOps"
+    "-feature"
+//    ,
+//    "-encoding", "utf8",
+//    "-language:implicitConversions",
+//    "-language:postfixOps"
   )
 
   /** Declare global dependency versions here to avoid mismatches in multi part dependencies */
