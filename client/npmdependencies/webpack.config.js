@@ -7,7 +7,7 @@ module.exports = {
         './vendor.js'
     ],
     output: {
-        publicPath: './gui/npmdependencies/output/',
+        publicPath: './client/npmdependencies/output/',
         path: 'output/',
         filename: PROD ? 'bundle.min.js' : 'bundle.js'
     },
