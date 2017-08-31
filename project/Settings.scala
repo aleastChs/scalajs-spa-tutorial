@@ -40,7 +40,7 @@ object Settings {
     lazy val bootstrap = "3.3.6"
     lazy val chartjs = "2.1.3"
 
-    lazy val scalajsScripts = "1.0.0"
+    lazy val scalajsScripts = "1.1.1"
 
     lazy val scalaRX = "0.3.2"
     lazy val d3 = "0.3.4"
