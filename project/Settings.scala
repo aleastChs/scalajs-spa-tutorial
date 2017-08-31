@@ -48,6 +48,7 @@ object Settings {
     lazy val playJson = "2.6.0"
     lazy val derivedCodecs = "4.0.0"
     lazy val scalaTime = "2.0.0-M12"
+    lazy val parser = "1.0.5"
   }
 
   /**
@@ -68,9 +69,6 @@ object Settings {
     "org.scalatest" %%% "scalatest" % versions.scalaTest % "test"
   ))
 
-
-
-
   /** Dependencies only used by the JS project (note the use of %%% instead of %%) */
   val scalajsDependencies = Def.setting(Seq(
     "com.github.japgolly.scalajs-react" %%% "core" % versions.scalajsReact,
@@ -80,6 +78,7 @@ object Settings {
     "io.suzaku" %%% "diode" % versions.diode,
     "io.suzaku" %%% "diode-react" % versions.diode,
 
+    "org.scala-lang.modules" %%% "scala-parser-combinators" % versions.parser,
     "com.lihaoyi" %%% "scalarx" % versions.scalaRX,
     "org.singlespaced" %%% "scalajs-d3" % versions.d3,
     "org.scala-js" %%% "scalajs-dom" % versions.scalaDom,
