@@ -70,3 +70,20 @@
 //    router().renderIntoDOM(dom.document.getElementById("root"))
 //  }
 //}
+
+package spatutorial.client
+
+import scala.scalajs.js.JSApp
+import spgui.Layout
+import japgolly.scalajs.react._
+import org.scalajs.dom.document
+
+import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
+
+@JSExportTopLevel("SPAMain")
+object SPAMain extends JSApp {
+  @JSExport
+  override def main(): Unit = {
+    Layout().renderIntoDOM(document.getElementById("spgui-root"))
+  }
+}
