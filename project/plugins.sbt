@@ -14,3 +14,5 @@ addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.5")
 addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.0")
+
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC8")
