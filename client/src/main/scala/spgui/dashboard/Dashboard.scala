@@ -18,7 +18,7 @@ import js.JSConverters._
 import org.scalajs.dom.window
 
 object Dashboard {
-  case class Props(proxy: ModelProxy[(Map[UUID, OpenWidget])])
+  case class Props(proxy: ModelProxy[(Map[UUID, OpenWidget], String)])
   case class State(width: Int)
 
   val cols = 12
@@ -32,12 +32,10 @@ object Dashboard {
       val widgets = for {
         openWidget <- p.proxy()._1.values
       } yield {
-        val frontEndState = p.proxy()._2
 
         <.div(
           DashboardItem(
             WidgetList.map(openWidget.widgetType)._1(
-              SPWidgetBase(openWidget.id, frontEndState)
             ),
             openWidget.widgetType,
             openWidget.id,
@@ -102,6 +100,6 @@ object Dashboard {
     .renderBackend[Backend]
     .build
 
-  def apply(proxy: ModelProxy[(Map[UUID, OpenWidget], GlobalState)]) =
+  def apply(proxy: ModelProxy[(Map[UUID, OpenWidget], String)]) =
     component(Props(proxy))
 }
