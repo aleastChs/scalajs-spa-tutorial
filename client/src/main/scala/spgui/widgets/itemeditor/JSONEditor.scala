@@ -1,12 +1,6 @@
 package spgui.widgets.itemeditor
 
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.html_<^._
-import scalacss.ScalaCssReact._
-
-import sp.domain.SPValue
-
-import scalajs.js
+import scala.scalajs.js
 import js.Dynamic.{ literal => l }
 import js.JSConverters._
 import org.scalajs.dom.raw
