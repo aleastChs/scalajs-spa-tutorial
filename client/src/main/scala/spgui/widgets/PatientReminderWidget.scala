@@ -16,9 +16,6 @@ import japgolly.scalajs.react.ReactDOM
 
 import spgui.SPWidget
 import spgui.widgets.css.{WidgetStyles => Styles}
-import spgui.communication._
-
-import sp.domain._
 
 import scala.concurrent.duration._
 import scala.scalajs.js
@@ -44,19 +41,6 @@ object PatientReminderWidget {
     // private val widgetWidth
 
     var patientObs = Option.empty[rx.Obs]
-    def setPatientObs(): Unit = {
-      patientObs = Some(spgui.widgets.akuten.PatientModel.getPatientObserver(
-        patients => $.setState(patients).runNow()
-      ))
-    }
-
-    send(api.GetState())
-
-
-    def send(mess: api.Event) {
-      val json = ToAndFrom.make(SPHeader(from = "PatientCardsWidget", to = "WidgetService"), mess)
-      BackendCommunication.publish(json, "widget-event")
-    }
 
     /**
       * Checks if the patient belongs to this team.
@@ -395,7 +379,7 @@ object PatientReminderWidget {
       EricaLogic.dummyPatient))
     .renderBackend[Backend]
     // .componentDidMount(_.backend.getWidgetWidth())
-    .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+    .componentDidMount(ctx => Callback.log("Patient Reminder mounted"))
     .componentWillUnmount(_.backend.onUnmount())
     .build
 

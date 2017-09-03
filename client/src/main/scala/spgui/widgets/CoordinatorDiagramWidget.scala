@@ -10,10 +10,6 @@ import japgolly.scalajs.react.ReactDOM
 
 import spgui.SPWidget
 import spgui.widgets.css.{WidgetStyles => Styles}
-import spgui.communication._
-
-import sp.domain._
-import sp.domain.Logic._
 
 import org.singlespaced.d3js.d3
 import org.singlespaced.d3js.Ops._
@@ -44,16 +40,7 @@ object CoordinatorDiagramWidget {
 
 private class Backend($: BackendScope[Unit, Map[String, apiPatient.Patient]]) {
 
-  val messObs = spgui.widgets.akuten.PatientModel.getPatientObserver(
-    patients => {
-      $.modState{s =>
-        patients
-      }.runNow()
-    }
-  )
-
   def onUnmount() = {
-    messObs.kill()
     Callback.empty
   }
 

@@ -42,20 +42,6 @@ object RoomOverviewWidget {
   private class Backend($: BackendScope[Unit, Map[String, apiPatient.Patient]]) {
 
     var patientObs = Option.empty[rx.Obs]
-    def setPatientObs(): Unit = {
-      patientObs = Some(spgui.widgets.akuten.PatientModel.getPatientObserver(
-        patients => $.setState(patients).runNow()
-      ))
-    }
-
-    val wsObs = BackendCommunication.getWebSocketStatusObserver(  mess => {
-      if (mess) send(api.GetState())
-    }, "patient-cards-widget-topic")
-
-    def send(mess: api.Event) {
-      val json = ToAndFrom.make(SPHeader(from = "PatientCardsWidget", to = "WidgetService"), mess)
-      BackendCommunication.publish(json, "widget-event")
-    }
 
     // What is this function used for?
     def render(p: Map[String, apiPatient.Patient]) = {
@@ -65,7 +51,6 @@ object RoomOverviewWidget {
     def onUnmount() = {
       println("Unmounting")
       patientObs.foreach(_.kill())
-      wsObs.kill()
       Callback.empty
     }
   }
@@ -74,7 +59,7 @@ object RoomOverviewWidget {
   .initialState(Map("-1" ->
     EricaLogic.dummyPatient))
     .renderBackend[Backend]
-    .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+    .componentDidMount(ctx => Callback.log("Room overview Mounted!!"))
     .componentDidUpdate(ctx => Callback(addTheD3(ctx.getDOMNode, ctx.currentState)))
     .componentWillUnmount(_.backend.onUnmount())
     .build
