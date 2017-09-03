@@ -16,9 +16,6 @@ import japgolly.scalajs.react.ReactDOM
 
 import spgui.SPWidget
 import spgui.widgets.css.{WidgetStyles => Styles}
-import spgui.communication._
-
-import sp.domain._
 
 import scala.concurrent.duration._
 import scala.scalajs.js
@@ -43,33 +40,18 @@ object DebuggingWidget {
   private class Backend($: BackendScope[String, Map[String, apiPatient.Patient]]) {
 
     var patientObs = Option.empty[rx.Obs]
-    def setPatientObs(): Unit = {
-      patientObs = Some(spgui.widgets.akuten.PatientModel.getPatientObserver(
-        patients => $.setState(patients).runNow()
-      ))
-    }
 
-    val wsObs = BackendCommunication.getWebSocketStatusObserver(  mess => {
-      if (mess) send(api.GetState())
-    }, "patient-cards-widget-topic")
-
-
-
-    def send(mess: api.Event) {
-      val json = ToAndFrom.make(SPHeader(from = "DebuggingWidget", to = "FelsökningsService"), mess)
-      BackendCommunication.publish(json, "widget-event")
-    }
 
     /**
-    * Checks if the patient belongs to this team.
-    */
+      * Checks if the patient belongs to this team.
+      */
     def belongsToThisTeam(patient: apiPatient.Patient, filter: String): Boolean = {
       filter.isEmpty || patient.team.team.contains(filter)
     }
 
     /**
-    * Returns the correct hex color for each priority.
-    */
+      * Returns the correct hex color for each priority.
+      */
     def decodeTriageColor(p: apiPatient.Priority): String = {
       p.color match {
         case "NotTriaged" => "#afafaf"//"#D5D5D5"
@@ -90,9 +72,9 @@ object DebuggingWidget {
     **/
     def decodeAttended(a: apiPatient.Attended): (Boolean, String) = {
       if (a.attended)
-      (true, a.doctorId)
+        (true, a.doctorId)
       else
-      (false, "Ej Påtittad")
+        (false, "Ej Påtittad")
     }
 
     /*
@@ -118,7 +100,7 @@ object DebuggingWidget {
     /**
     Decodes the initial background and icon colors of the progress bar. Tuple values as follows:
     (initial background, initial symbol)
-    */
+      */
     def progressBarInitialColoring(p: apiPatient.Priority): (String, String) = {
       p.color match {
         case "NotTriaged" => ("#E0E0E0", "#AFAFAF")
@@ -139,7 +121,7 @@ object DebuggingWidget {
     List((attended background color, attended symbol color, patient is attended),
     (plan background color, plan symbol color, plan does exist),
     (finished background color, finished symbol color, patient is finished))
-    */
+      */
     def progressBarColoring(p: apiPatient.Patient): List[(String, String, Boolean)] = {
       val coloring = ListBuffer[(String, String, Boolean)]()
       val initColoring = progressBarInitialColoring(p.priority)
@@ -157,8 +139,8 @@ object DebuggingWidget {
     }
 
     /**
-    * Converts milliseconds to hours and minutes, visualized in string.
-    */
+      * Converts milliseconds to hours and minutes, visualized in string.
+      */
     def getTimeDiffReadable(milliseconds: Long): (String, String) = {
       val minutes = ((milliseconds / (1000*60)) % 60)
       val hours = ((milliseconds / (1000*60*60)) )//% 24)
@@ -198,7 +180,7 @@ object DebuggingWidget {
     /**
     From ElvisDataHandler.scala
     Code used for data to CoordinatorDiagramWidget
-    */
+      */
     def decodeTeam(reasonForVisit: String, location: String, clinic: String): String = {
       reasonForVisit match {
         case "AKP" => "stream"
@@ -373,16 +355,16 @@ object DebuggingWidget {
             svg.height := "11.111678",
             svg.width := "11.111678",
             svg.fill := { if (p.finished.finishedStillPresent) { // code from statuswidget
-                "#ffedff"
+              "#ffedff"
+            } else {
+              if (p.plan.hasPlan) {
+                "#e9b7ff"
+              } else if (p.attended.attended) {
+                "#8d47aa"
               } else {
-                if (p.plan.hasPlan) {
-                  "#e9b7ff"
-                } else if (p.attended.attended) {
-                  "#8d47aa"
-                } else {
-                  "#1c0526"
-                }
+                "#1c0526"
               }
+            }
             }
 
           ),
@@ -615,52 +597,47 @@ object DebuggingWidget {
     def render(filter: String, pmap: Map[String, apiPatient.Patient]) = {
       val pats = (pmap - "-1").filter(p => belongsToThisTeam(p._2, filter))
 
-      <.div(^.`class` := "card-holder-root", Styles.helveticaZ, Styles.hideScrollBar)(
-        svg.svg(
-          svg.width := "0",
-          svg.height := "0",
-          svg.defs(
-            svg.pattern(
-              svg.id := "untriagedPattern",
-              svg.width := "35.43",
-              svg.height := "35.43",
-              svg.patternUnits := "userSpaceOnUse",
-              svg.patternTransform := "translate(0,0)",
-              svg.path(
-                svg.fill := "#000000",
-                svg.d := "M 1.96875 0 L 0 1.96875 L 0 2.25 L 2.25 0 L 1.96875 0 z M 10.814453 0 L 0 10.816406 L 0 11.097656 L 11.097656 0 L 10.814453 0 z M 19.65625 0 L 0 19.65625 L 0 19.941406 L 19.939453 0 L 19.65625 0 z M 28.517578 0 L 0 28.517578 L 0 28.800781 L 28.800781 0 L 28.517578 0 z M 35.433594 1.9453125 L 1.9453125 35.433594 L 2.2285156 35.433594 L 35.433594 2.2285156 L 35.433594 1.9453125 z M 35.433594 10.841797 L 10.841797 35.433594 L 11.125 35.433594 L 35.433594 11.125 L 35.433594 10.841797 z M 35.433594 19.738281 L 19.738281 35.433594 L 20.019531 35.433594 L 35.433594 20.021484 L 35.433594 19.738281 z M 35.433594 28.603516 L 28.605469 35.433594 L 28.886719 35.433594 L 35.433594 28.886719 L 35.433594 28.603516 z "
-              )
-            )
-          )
-        ),
-        sortPatientsByRoomNr(pats).map{ ccid =>
-          patientCard(pats(ccid))
-        }.toVdomArray
-      )
+      <.div(^.`class` := "card-holder-root", Styles.helveticaZ, Styles.hideScrollBar)("hej")
+
+//        svg.svg(
+      //          svg.width := "0",
+      //          svg.height := "0",
+      //          svg.defs(
+      //            svg.pattern(
+      //              svg.id := "untriagedPattern",
+      //              svg.width := "35.43",
+      //              svg.height := "35.43",
+      //              svg.patternUnits := "userSpaceOnUse",
+      //              svg.patternTransform := "translate(0,0)",
+      //              svg.path(
+      //                svg.fill := "#000000",
+      //                svg.d := "M 1.96875 0 L 0 1.96875 L 0 2.25 L 2.25 0 L 1.96875 0 z M 10.814453 0 L 0 10.816406 L 0 11.097656 L 11.097656 0 L 10.814453 0 z M 19.65625 0 L 0 19.65625 L 0 19.941406 L 19.939453 0 L 19.65625 0 z M 28.517578 0 L 0 28.517578 L 0 28.800781 L 28.800781 0 L 28.517578 0 z M 35.433594 1.9453125 L 1.9453125 35.433594 L 2.2285156 35.433594 L 35.433594 2.2285156 L 35.433594 1.9453125 z M 35.433594 10.841797 L 10.841797 35.433594 L 11.125 35.433594 L 35.433594 11.125 L 35.433594 10.841797 z M 35.433594 19.738281 L 19.738281 35.433594 L 20.019531 35.433594 L 35.433594 20.021484 L 35.433594 19.738281 z M 35.433594 28.603516 L 28.605469 35.433594 L 28.886719 35.433594 L 35.433594 28.886719 L 35.433594 28.603516 z "
+      //              )
+      //            )
+      //          )
+      //        ),
+      //        sortPatientsByRoomNr(pats).map{ ccid =>
+      //          patientCard(pats(ccid))
+      //        }.toVdomArray
+      //      )
     }
 
     def onUnmount() = {
       println("Unmounting")
       patientObs.foreach(_.kill())
-      wsObs.kill()
       Callback.empty
     }
   }
 
-  def extractTeam(attributes: Map[String, SPValue]) = {
-    attributes.get("team").flatMap(x => x.asOpt[String]).getOrElse("medicin")
-  }
-
   private val cardHolderComponent = ScalaComponent.builder[String]("cardHolderComponent")
-  .initialState(Map("-1" ->
-    EricaLogic.dummyPatient))
+    .initialState(Map("-1" ->
+      EricaLogic.dummyPatient))
     .renderBackend[Backend]
-    .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+    .componentDidMount(ctx => Callback.log("Component Mounted! "+ this.getClass.toString))
     .componentWillUnmount(_.backend.onUnmount())
     .build
 
-    def apply() = spgui.SPWidget(spwb => {
-      val currentTeam = extractTeam(spwb.frontEndState.attributes)
-      cardHolderComponent(currentTeam)
-    })
-  }
+  def apply() = spgui.SPWidget(spwb =>
+    cardHolderComponent("Hej cardHolder")
+  )
+}
