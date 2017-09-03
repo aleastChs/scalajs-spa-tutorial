@@ -37,7 +37,7 @@ object Dashboard {
         <.div(
           DashboardItem(
             WidgetList.map(openWidget.widgetType)._1(
-              SPWidgetBase(openWidget.id)
+              SPWidgetBase(openWidget.id, frontEndState)
             ),
             openWidget.widgetType,
             openWidget.id,
@@ -102,6 +102,6 @@ object Dashboard {
     .renderBackend[Backend]
     .build
 
-  def apply(proxy: ModelProxy[(Map[UUID, OpenWidget], String)]) =
+  def apply(proxy: ModelProxy[(Map[UUID, OpenWidget], GlobalState)]) =
     component(Props(proxy))
 }

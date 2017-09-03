@@ -8,7 +8,7 @@ import spgui.circuit._
 import java.util.UUID
 
 
-case class SPWidgetBase(id: UUID) {
+case class SPWidgetBase(id: UUID, s: String) {
 
   def updateWidgetData(data: String): Unit = {
     SPGUICircuit.dispatch(UpdateWidgetData(id, data))

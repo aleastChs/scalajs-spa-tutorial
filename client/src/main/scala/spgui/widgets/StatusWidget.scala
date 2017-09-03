@@ -35,7 +35,7 @@ object StatusWidget {
     .initialState(Map("-1" ->
       EricaLogic.dummyPatient))
     .renderBackend[Backend]
-    .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+    .componentDidMount(ctx => Callback.log("Status widget mounted!!"))
     .componentDidUpdate(ctx => Callback(addTheD3(ctx.getDOMNode, ctx.currentState, ctx.currentProps)))
     .componentWillUnmount(_.backend.onUnmount())
     .build
@@ -250,13 +250,7 @@ object StatusWidget {
     // ---------------------------------
 
   }
-
-  def extractTeam(attributes: Map[String, SPValue]) = {
-    attributes.get("team").flatMap(x => x.asOpt[String]).getOrElse("medicin")
-  }
-
   def apply() = spgui.SPWidget(spwb => {
-    val currentTeam = extractTeam(spwb.frontEndState.attributes)
-    component(currentTeam)
+    component("Hej status widget")
   })
 }

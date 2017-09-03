@@ -123,7 +123,7 @@ object WaitingRoomWidget {
     EricaLogic.dummyPatient))
   .renderBackend[Backend]
   //.componentDidUpdate(dcb => Callback(addTheD3(ReactDOM.findDOMNode(dcb.component), dcb.currentState)))
-  .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+  .componentDidMount(ctx => Callback.log("Waiting room mounted!!"))
   .componentDidUpdate(ctx => Callback(addTheD3(ctx.getDOMNode, ctx.currentState)))
   .componentWillUnmount(_.backend.onUnmount())
   .build
