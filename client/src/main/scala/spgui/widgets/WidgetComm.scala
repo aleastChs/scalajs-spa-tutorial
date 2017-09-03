@@ -1,9 +1,6 @@
 package spgui.widgets
 
-import sp.domain._
-import Logic._
 import play.api.libs.json._
-import spgui.communication.BackendCommunication
 
 import scala.util.Try
 
@@ -57,22 +54,6 @@ object API_Patient {
                       var finished: Finished
                     )
 
-  object Patient {
-    implicit val fapipat1: JSFormat[Priority] = Json.format[Priority]
-    implicit val fapipat2: JSFormat[Attended] = Json.format[Attended]
-    implicit val fapipat3: JSFormat[Location] = Json.format[Location]
-    implicit val fapipat4: JSFormat[Team] = Json.format[Team]
-    implicit val fapipat5: JSFormat[Examination] = Json.format[Examination]
-    implicit val fapipat6: JSFormat[LatestEvent] = Json.format[LatestEvent]
-    implicit val fapipat7: JSFormat[Plan] = Json.format[Plan]
-    implicit val fapipat8: JSFormat[ArrivalTime] = Json.format[ArrivalTime]
-    implicit val fapipat9: JSFormat[Finished] = Json.format[Finished]
-    implicit val fapipat10: JSFormat[Debugging] = Json.format[Debugging]
-    implicit val fapipat11: JSFormat[Removed] = Json.format[Removed]
-
-    implicit val fPatient: JSFormat[Patient] = deriveFormatSimple[Patient]
-  }
-
 }
 
 object API_PatientEvent {
@@ -95,7 +76,6 @@ object API_PatientEvent {
   }
 
   object Event {
-    implicit val fEvent: JSFormat[Event] = deriveFormatISA[Event]
   }
 }
 
