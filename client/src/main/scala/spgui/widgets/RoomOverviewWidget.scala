@@ -1,40 +1,17 @@
 package spgui.widgets
 
-import java.time._ //ARTO: Använder wrappern https://github.com/scala-js/scala-js-java-time
-import java.text.SimpleDateFormat
-import java.util.UUID
-
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import japgolly.scalajs.react.ReactDOM
 
 import spgui.SPWidget
 import spgui.widgets.css.{WidgetStyles => Styles}
-import spgui.communication._
-
-import sp.domain._
-import sp.domain.Logic._
-
-import org.singlespaced.d3js.d3
-import org.singlespaced.d3js.Ops._
-
-import scala.concurrent.duration._
-import scala.scalajs.js
-import scala.util.{ Try, Success }
-import scala.util.Random.nextInt
-
-import org.scalajs.dom
 import org.scalajs.dom.raw
-import org.scalajs.dom.{svg => *}
 import org.singlespaced.d3js.d3
-import org.singlespaced.d3js.Ops._
 
 import scalacss.ScalaCssReact._
-import scalacss.DevDefaults._
 
 import scala.collection.mutable.ListBuffer
 
-import spgui.widgets.{API_PatientEvent => api}
 import spgui.widgets.{API_Patient => apiPatient}
 
 object RoomOverviewWidget {

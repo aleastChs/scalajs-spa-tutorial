@@ -78,10 +78,3 @@ object API_PatientEvent {
   object Event {
   }
 }
-
-
-object ToAndFrom {
-  def eventBody(mess: SPMessage): Try[API_PatientEvent.Event] = mess.getBodyAs[API_PatientEvent.Event]
-
-  def make(h: SPHeader, b: API_PatientEvent.Event): SPMessage = SPMessage.make(h, b)
-}
