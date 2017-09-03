@@ -102,6 +102,6 @@ object Dashboard {
     .renderBackend[Backend]
     .build
 
-  def apply(proxy: ModelProxy[(Map[UUID, OpenWidget], GlobalState)]) =
+  def apply(proxy: ModelProxy[(Map[UUID, OpenWidget], String)]) =
     component(Props(proxy))
 }
