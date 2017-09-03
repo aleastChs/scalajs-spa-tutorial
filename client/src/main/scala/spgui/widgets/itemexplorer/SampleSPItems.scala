@@ -1,7 +1,5 @@
 package spgui.widgets.itemexplorer
 
-import sp.domain._
-
 object SampleSPItems {
   val gustaf = Operation("Gustaf")
   val klas = Operation("Klas")
@@ -26,18 +24,15 @@ object SampleSPItems {
 
 case class Operation(name: String,
                      conditions: List[Condition] = List(),
-                     attributes: SPAttributes = SPAttributes(),
                      id: ID = ID.newID)
     extends IDAble { }
 
 case class SOPSpec(name: String,
                    sop: List[SOP],
-                   attributes: SPAttributes = SPAttributes(),
                    id: ID = ID.newID) extends Specification
 
 case class HierarchyRoot(name: String,
                          children: List[HierarchyNode] = List(),
-                         attributes: SPAttributes = SPAttributes(),
                          id: ID = ID.newID) extends Specification
 
 case class HierarchyNode(item: ID, children: List[HierarchyNode] = List(), id: ID = ID.newID)
@@ -46,7 +41,6 @@ case class HierarchyNode(item: ID, children: List[HierarchyNode] = List(), id: I
 trait IDAble {
   val name: String
   val id: ID
-  val attributes: SPAttributes
 
   def |=(x: Any) = x match {
     case m: IDAble => m.id.equals(id)
@@ -66,7 +60,6 @@ case class ID(value: java.util.UUID){
 
 
 trait Condition {
-  val attributes: SPAttributes
 }
 
 

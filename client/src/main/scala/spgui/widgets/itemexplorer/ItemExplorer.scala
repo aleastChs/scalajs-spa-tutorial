@@ -8,7 +8,7 @@ import spgui.SPWidget
 import spgui.components.Icon
 
 import java.util.UUID
-import scalajs.js
+import scala.scalajs.js
 import js.Dynamic.{ literal => l }
 import js.JSON
 

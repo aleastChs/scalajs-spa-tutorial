@@ -3,7 +3,6 @@ package spgui.widgets.itemexplorer
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import japgolly.scalajs.react.vdom.all.aria
 import scalacss.ScalaCssReact._
 
 import spgui.components.DragAndDrop.{ DataOnDrag, OnDataDrop }
