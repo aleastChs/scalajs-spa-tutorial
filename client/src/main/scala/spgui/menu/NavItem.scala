@@ -3,7 +3,6 @@ package spgui.menu
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 
-import org.scalajs.dom._
 
 object NavItem {
   case class Props (

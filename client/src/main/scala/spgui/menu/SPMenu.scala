@@ -2,7 +2,6 @@ package spgui.menu
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import org.scalajs.dom._
 
 import spgui.components.{Icon, SPNavbarElements}
 import spgui.circuit.{CloseAllWidgets, SPGUICircuit, ToggleHeaders, Settings, SetTheme}
