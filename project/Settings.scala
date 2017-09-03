@@ -26,7 +26,7 @@ object Settings {
 
   /** Declare global dependency versions here to avoid mismatches in multi part dependencies */
   object versions {
-    lazy val scala = "2.12.3"
+    lazy val scala = "2.11.11"
     lazy val scalaDom = "0.9.2"
     lazy val scalajsReact = "1.1.0"
     lazy val scalaCSS = "0.5.3"
