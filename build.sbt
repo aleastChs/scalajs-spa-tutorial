@@ -10,33 +10,7 @@ lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
   // set up settings specific to the JS project
   .jsConfigure(_ enablePlugins ScalaJSWeb)
 
-lazy val root = (project in file("."))
-
-lazy val commonSettings = Seq(
-    //  scalaOrganization := "org.typelevel",
-    //  scalaVersion := "2.12.3-bin-typelevel-4",
-    scalaOrganization := "org.scala-lang",
-    scalaVersion := "2.12.3",
-    resolvers ++= Seq(
-        "Sonatype OSS Snapshots" at "https://oss.sonatype.org/Releases",
-        "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/",
-        "sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"),
-    scalacOptions  := Seq(
-        "-encoding", "utf8",
-        "-feature",
-        "-unchecked",
-        "-deprecation",
-        "-target:jvm-1.8",
-        "-language:implicitConversions",
-        "-language:postfixOps"
-    ),
-    fork := true,
-    connectInput in run := true,
-    version := "2.0_M1"
-)
-
-lazy val spdomain = (project in file("spdomain"))
-  .settings(commonSettings: _*)
+lazy val spa_spgui = (project in file("."))
 
 lazy val sharedJVM = shared.jvm.settings(name := "sharedJVM")
 
@@ -47,7 +21,6 @@ lazy val elideOptions = settingKey[Seq[String]]("Set limit for elidable function
 
 // instantiate the JS project for SBT with some additional settings
 lazy val client: Project = (project in file("client"))
-  .dependsOn(spdomain)
   .settings(
     name := "client",
     version := Settings.version,
