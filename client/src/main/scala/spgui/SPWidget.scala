@@ -47,7 +47,6 @@ object SPWidgetBaseTest {
       Callback.log("Save On Change in SPWidgetBaseTest")
 
     def copyMe(): Callback = {
-      val d = spwb.getWidgetData
       Callback.log("Copy me in SPWidgetBaseTest")
     }
 
@@ -57,7 +56,7 @@ object SPWidgetBaseTest {
       <.label("My Data"),
       <.input(
         ^.tpe := "text",
-        ^.defaultValue := spwb.getWidgetData,
+        ^.defaultValue := "default value aleast input",
         ^.onChange ==> saveOnChange
       ),
       <.button("Copy me", ^.onClick --> copyMe()),

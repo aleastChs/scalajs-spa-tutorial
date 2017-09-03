@@ -2,12 +2,9 @@ package spgui.widgets.charts
 
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react._
-import sp.domain._
-import Logic._
 
 import scalacss.ScalaCssReact._
-import spgui.communication._
-import spgui.widgets.{EricaLogic, ToAndFrom, API_Patient => apiPatient, API_PatientEvent => api}
+import spgui.widgets.{EricaLogic, API_Patient => apiPatient}
 import spgui.widgets.css.{WidgetStyles => Styles}
 
 object PatientGanttWidget {
@@ -31,7 +28,6 @@ object PatientGanttWidget {
     .initialState(Map("-1" ->
       EricaLogic.dummyPatient))
     .renderBackend[Backend]
-    // .componentDidMount(_.backend.getWidgetWidth())
     .componentDidMount(ctx => Callback.log("gantt Mounted!!!"))
     .componentWillUnmount(_.backend.onUnmount())
     .build

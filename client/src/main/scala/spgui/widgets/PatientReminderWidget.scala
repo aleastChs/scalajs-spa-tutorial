@@ -298,13 +298,12 @@ object PatientReminderWidget {
         sortPatientsByLatestEvent(ccidsMissingPriority))
     }
 
-    val globalState = SPGUICircuit.connect(x => (x.openWidgets.xs, x.globalState))
+    val globalState = SPGUICircuit.connect(x => (x.openWidgets.xs))
 
     def render(pmap: Map[String, apiPatient.Patient]) = {
 
       globalState{x =>
-        val filter = x()._2.attributes.get("team").flatMap(x => x.asOpt[String]).getOrElse("medicin")
-        val pats = (pmap - "-1").filter(p => belongsToThisTeam(p._2, filter))
+        val pats = (pmap - "-1")
         var numberToDraw = 10
         var ccidsToDraw = List[String]()
 
@@ -320,7 +319,7 @@ object PatientReminderWidget {
               patientCard(pats(ccid))
               //sortPatientsByPriority(pats.filter((t) => t._2.latestEvent.needsAttention)).take(numberToDraw) map { ccid =>
               // patientCard(pats(ccid))
-            }.toVdomArray},
+            }.toTagMod},
           // <.div(^.`class` := "hallå", Styles.widgetText)(
           //   svg.text(
           //     "widgetWidth: " + widgetWidth

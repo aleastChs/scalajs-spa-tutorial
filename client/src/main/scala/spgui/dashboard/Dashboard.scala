@@ -32,10 +32,12 @@ object Dashboard {
       val widgets = for {
         openWidget <- p.proxy()._1.values
       } yield {
+        val frontEndState = p.proxy()._2
 
         <.div(
           DashboardItem(
             WidgetList.map(openWidget.widgetType)._1(
+              SPWidgetBase(openWidget.id)
             ),
             openWidget.widgetType,
             openWidget.id,

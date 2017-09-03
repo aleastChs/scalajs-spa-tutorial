@@ -38,7 +38,6 @@ object WidgetList {
       ("PlcHldrC",                    PlaceholderComp(),                             3, 4),
       ("SPWBTest",                    SPWidgetBaseTest(),                            3, 4),
       ("D3Example",                   widgets.examples.D3Example(),                  3, 4),
-      ("Item explorer",               widgets.itemexplorer.ItemExplorer(),           3, 4),
       ("SopMaker",                    widgets.sopmaker.SopMakerWidget(),             3, 4)
     )
 
