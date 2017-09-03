@@ -1,9 +1,9 @@
 package controllers
 
 import java.nio.ByteBuffer
+import javax.inject.Inject
 
 import boopickle.Default._
-import com.google.inject.Inject
 import play.api.{Configuration, Environment}
 import play.api.mvc._
 import services.ApiService
