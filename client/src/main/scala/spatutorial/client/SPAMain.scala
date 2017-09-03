@@ -83,6 +83,7 @@ import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 object SPAMain extends JSApp {
   @JSExport
   def main(): Unit = {
+
     Layout().renderIntoDOM(document.getElementById("spgui-root"))
   }
 }
