@@ -1,40 +1,16 @@
 package spgui.widgets
 
-import java.time._ //ARTO: Använder wrappern https://github.com/scala-js/scala-js-java-time
-import java.text.SimpleDateFormat
-import java.util.UUID
-
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import japgolly.scalajs.react.ReactDOM
 
-import spgui.SPWidget
 import spgui.widgets.css.{WidgetStyles => Styles}
-import spgui.communication._
 
-import sp.domain._
-import sp.domain.Logic._
-
-import org.singlespaced.d3js.d3
-import org.singlespaced.d3js.Ops._
-
-import scala.concurrent.duration._
-import scala.scalajs.js
-import scala.util.{ Try, Success }
-import scala.util.Random.nextInt
-
-import org.scalajs.dom
 import org.scalajs.dom.raw
-import org.scalajs.dom.{svg => *}
+
 import org.singlespaced.d3js.d3
-import org.singlespaced.d3js.Ops._
 
 import scalacss.ScalaCssReact._
-import scalacss.DevDefaults._
 
-import scala.collection.mutable.ListBuffer
-
-import spgui.widgets.{API_PatientEvent => api}
 import spgui.widgets.{API_Patient => apiPatient}
 
 object StatusWidget {
@@ -42,20 +18,7 @@ object StatusWidget {
   private class Backend($: BackendScope[String, Map[String, apiPatient.Patient]]) {
 
     var patientObs = Option.empty[rx.Obs]
-    def setPatientObs(): Unit = {
-      patientObs = Some(spgui.widgets.akuten.PatientModel.getPatientObserver(
-        patients => $.setState(patients).runNow()
-      ))
-    }
 
-    val wsObs = BackendCommunication.getWebSocketStatusObserver(  mess => {
-      if (mess) send(api.GetState())
-    }, "patient-cards-widget-topic")
-
-    def send(mess: api.Event) {
-      val json = ToAndFrom.make(SPHeader(from = "PatientCardsWidget", to = "WidgetService"), mess)
-      BackendCommunication.publish(json, "widget-event")
-    }
 
     def render(p: String, s: Map[String, apiPatient.Patient]) = {
       <.div(Styles.helveticaZ)
@@ -64,23 +27,22 @@ object StatusWidget {
     def onUnmount() = {
       println("Unmounting")
       patientObs.foreach(_.kill())
-      wsObs.kill()
       Callback.empty
     }
   }
 
   private val component = ScalaComponent.builder[String]("TeamStatusWidget")
-  .initialState(Map("-1" ->
-    EricaLogic.dummyPatient))
-  .renderBackend[Backend]
-  .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
-  .componentDidUpdate(ctx => Callback(addTheD3(ctx.getDOMNode, ctx.currentState, ctx.currentProps)))
-  .componentWillUnmount(_.backend.onUnmount())
-  .build
+    .initialState(Map("-1" ->
+      EricaLogic.dummyPatient))
+    .renderBackend[Backend]
+    .componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+    .componentDidUpdate(ctx => Callback(addTheD3(ctx.getDOMNode, ctx.currentState, ctx.currentProps)))
+    .componentWillUnmount(_.backend.onUnmount())
+    .build
 
   /**
-  * Checks if the patient belongs to this team.
-  */
+    * Checks if the patient belongs to this team.
+    */
   def belongsToThisTeam(patient: apiPatient.Patient, filter: String): Boolean = {
     filter.isEmpty || patient.team.team.contains(filter)
   }
@@ -165,127 +127,127 @@ object StatusWidget {
 
     val g = svg.append("g")
     // ----------- Graf ett -------------
-  g.append("rect")
-    .attr("x", 0)
-    .attr("y", (50/419.0)*width)
-    .attr("width", length("Unattended"))
-    .attr("height", barHeight)
-    .attr("fill", colorBarOne)
+    g.append("rect")
+      .attr("x", 0)
+      .attr("y", (50/419.0)*width)
+      .attr("width", length("Unattended"))
+      .attr("height", barHeight)
+      .attr("fill", colorBarOne)
 
-  svg.append("text")
-    .attr("x", length("Unattended") - distance(statusMap("Unattended")))
-    .attr("y", (75/419.0)*width)
-    .attr("font-size", fontSize)
-    .text(s"${removeZero(statusMap("Unattended"))}")
-    .attr("fill", colorNumbersLight)
-  // ----------- Graf två -------------
-  g.append("rect")
-    .attr("x", length("Unattended"))
-    .attr("y", (50/419.0)*width)
-    .attr("width", length("Attended"))
-    .attr("height", barHeight)
-    .attr("fill", colorBarTwo)
+    svg.append("text")
+      .attr("x", length("Unattended") - distance(statusMap("Unattended")))
+      .attr("y", (75/419.0)*width)
+      .attr("font-size", fontSize)
+      .text(s"${removeZero(statusMap("Unattended"))}")
+      .attr("fill", colorNumbersLight)
+    // ----------- Graf två -------------
+    g.append("rect")
+      .attr("x", length("Unattended"))
+      .attr("y", (50/419.0)*width)
+      .attr("width", length("Attended"))
+      .attr("height", barHeight)
+      .attr("fill", colorBarTwo)
 
-  svg.append("text")
-    .attr("x", length("Unattended") + length("Attended") - distance(statusMap("Attended")))
-    .attr("y", (75/419.0)*width)
-    .attr("font-size", fontSize)
-    .text(s"${removeZero(statusMap("Attended"))}")
-    .attr("fill", colorNumbersLight)
-  // ----------- Graf tre -------------
-  g.append("rect")
-    .attr("x", length("Attended") + length("Unattended"))
-    .attr("y", (50/419.0)*width)
-    .attr("width", length("AttendedWithPlan"))
-    .attr("height", barHeight)
-    .attr("fill", colorBarThree)
+    svg.append("text")
+      .attr("x", length("Unattended") + length("Attended") - distance(statusMap("Attended")))
+      .attr("y", (75/419.0)*width)
+      .attr("font-size", fontSize)
+      .text(s"${removeZero(statusMap("Attended"))}")
+      .attr("fill", colorNumbersLight)
+    // ----------- Graf tre -------------
+    g.append("rect")
+      .attr("x", length("Attended") + length("Unattended"))
+      .attr("y", (50/419.0)*width)
+      .attr("width", length("AttendedWithPlan"))
+      .attr("height", barHeight)
+      .attr("fill", colorBarThree)
 
-  svg.append("text")
-    .attr("x", length("Unattended") + length("Attended") + length("AttendedWithPlan") - distance(statusMap("AttendedWithPlan")))
-    .attr("y", (75/419.0)*width)
-    .attr("font-size", fontSize)
-    .text(s"${removeZero(statusMap("AttendedWithPlan"))}")
-    .attr("fill", colorNumbersDark)
-  // ----------- Graf fyra -------------
-  g.append("rect")
-    .attr("x", length("AttendedWithPlan") + length("Attended") + length("Unattended"))
-    .attr("y", (50/419.0)*width)
-    .attr("width", length("Finished"))
-    .attr("height", barHeight)
-    .attr("fill", colorBarFour)
+    svg.append("text")
+      .attr("x", length("Unattended") + length("Attended") + length("AttendedWithPlan") - distance(statusMap("AttendedWithPlan")))
+      .attr("y", (75/419.0)*width)
+      .attr("font-size", fontSize)
+      .text(s"${removeZero(statusMap("AttendedWithPlan"))}")
+      .attr("fill", colorNumbersDark)
+    // ----------- Graf fyra -------------
+    g.append("rect")
+      .attr("x", length("AttendedWithPlan") + length("Attended") + length("Unattended"))
+      .attr("y", (50/419.0)*width)
+      .attr("width", length("Finished"))
+      .attr("height", barHeight)
+      .attr("fill", colorBarFour)
 
-  svg.append("text")
-    .attr("x", length("Unattended") + length("Attended") + length("AttendedWithPlan") + length("Finished") - distance(statusMap("Finished")))
-    .attr("y", (75/419.0)*width)
-    .attr("font-size", fontSize)
-    .text(s"${removeZero(statusMap("Finished"))}")
-    .attr("fill", colorNumbersDark)
-  // ------------------------------------
+    svg.append("text")
+      .attr("x", length("Unattended") + length("Attended") + length("AttendedWithPlan") + length("Finished") - distance(statusMap("Finished")))
+      .attr("y", (75/419.0)*width)
+      .attr("font-size", fontSize)
+      .text(s"${removeZero(statusMap("Finished"))}")
+      .attr("fill", colorNumbersDark)
+    // ------------------------------------
 
-  // -------- Små Rektanglar ------------
+    // -------- Små Rektanglar ------------
 
-  // --------- Rektangel ett -----------
-  g.append("rect")
-    .attr("x", 0)
-    .attr("y", (30/419.0)*width)
-    .attr("width", smallRec)
-    .attr("height", smallRec)
-    .attr("fill", colorBarOne)
+    // --------- Rektangel ett -----------
+    g.append("rect")
+      .attr("x", 0)
+      .attr("y", (30/419.0)*width)
+      .attr("width", smallRec)
+      .attr("height", smallRec)
+      .attr("fill", colorBarOne)
 
-  svg.append("text")
-    .attr("x", (20/419.0)*width)
-    .attr("y", (42.5/419.0)*width)
-    .attr("font-size", sizeText)
-    .text("Opåtittad")
-  // --------- Rektangel två -----------
-  g.append("rect")
-    .attr("x", ((0 + 120)/419.0)*width)
-    .attr("y", (30/419.0)*width)
-    .attr("width", smallRec)
-    .attr("height", smallRec)
-    .attr("fill", colorBarTwo)
+    svg.append("text")
+      .attr("x", (20/419.0)*width)
+      .attr("y", (42.5/419.0)*width)
+      .attr("font-size", sizeText)
+      .text("Opåtittad")
+    // --------- Rektangel två -----------
+    g.append("rect")
+      .attr("x", ((0 + 120)/419.0)*width)
+      .attr("y", (30/419.0)*width)
+      .attr("width", smallRec)
+      .attr("height", smallRec)
+      .attr("fill", colorBarTwo)
 
-  svg.append("text")
-    .attr("x", ((20 + 120)/419.0)*width)
-    .attr("y", (42.5/419.0)*width)
-    .attr("font-size", sizeText)
-    .text("Påtittad")
-  // --------- Rektangel tre -----------
-  g.append("rect")
-    .attr("x", ((0 + 240)/419.0)*width)
-    .attr("y", (30/419.0)*width)
-    .attr("width", smallRec)
-    .attr("height", smallRec)
-    .attr("fill", colorBarThree)
+    svg.append("text")
+      .attr("x", ((20 + 120)/419.0)*width)
+      .attr("y", (42.5/419.0)*width)
+      .attr("font-size", sizeText)
+      .text("Påtittad")
+    // --------- Rektangel tre -----------
+    g.append("rect")
+      .attr("x", ((0 + 240)/419.0)*width)
+      .attr("y", (30/419.0)*width)
+      .attr("width", smallRec)
+      .attr("height", smallRec)
+      .attr("fill", colorBarThree)
 
-  svg.append("text")
-    .attr("x", ((20 + 240)/419.0)*width)
-    .attr("y", (42.5/419.0)*width)
-    .attr("font-size", sizeText)
-    .text("Påtittad m. plan")
-  // --------- Rektangel fyra -----------
-  g.append("rect")
-    .attr("x", ((0 + 360)/419.0)*width)
-    .attr("y", (30/419.0)*width)
-    .attr("width", smallRec)
-    .attr("height", smallRec)
-    .attr("fill", colorBarFour)
+    svg.append("text")
+      .attr("x", ((20 + 240)/419.0)*width)
+      .attr("y", (42.5/419.0)*width)
+      .attr("font-size", sizeText)
+      .text("Påtittad m. plan")
+    // --------- Rektangel fyra -----------
+    g.append("rect")
+      .attr("x", ((0 + 360)/419.0)*width)
+      .attr("y", (30/419.0)*width)
+      .attr("width", smallRec)
+      .attr("height", smallRec)
+      .attr("fill", colorBarFour)
 
-  svg.append("text")
-    .attr("x", ((20 + 360)/419.0)*width)
-    .attr("y", (42.5/419.0)*width)
-    .attr("font-size", sizeText)
-    .text("Klar")
-  // ------------------------------------
+    svg.append("text")
+      .attr("x", ((20 + 360)/419.0)*width)
+      .attr("y", (42.5/419.0)*width)
+      .attr("font-size", sizeText)
+      .text("Klar")
+    // ------------------------------------
 
-  // ----------- PLATS --------------
-  svg.append("text")
-    .attr("x", 0)
-    .attr("y", (20/419.0)*width)
-    .attr("font-size", s"${(15/419.0)*width}pt")
-    .text("STATUS")
-    .attr("fill", "#95989a")
-  // ---------------------------------
+    // ----------- PLATS --------------
+    svg.append("text")
+      .attr("x", 0)
+      .attr("y", (20/419.0)*width)
+      .attr("font-size", s"${(15/419.0)*width}pt")
+      .text("STATUS")
+      .attr("fill", "#95989a")
+    // ---------------------------------
 
   }
 

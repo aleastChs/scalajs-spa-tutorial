@@ -18,7 +18,7 @@ import js.JSConverters._
 import org.scalajs.dom.window
 
 object Dashboard {
-  case class Props(proxy: ModelProxy[(Map[UUID, OpenWidget], GlobalState)])
+  case class Props(proxy: ModelProxy[(Map[UUID, OpenWidget])])
   case class State(width: Int)
 
   val cols = 12

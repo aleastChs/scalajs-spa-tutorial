@@ -2,9 +2,8 @@ package spgui.dashboard
 
 import japgolly.scalajs.react._
 import scala.scalajs.js
-import js.annotation.{ JSName, JSGlobal }
+import js.annotation.{ JSGlobal }
 import japgolly.scalajs.react.vdom.html_<^.VdomArray
-import java.util.UUID
 
 object ResponsiveReactGridLayout {
 

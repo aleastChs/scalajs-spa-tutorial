@@ -6,24 +6,8 @@ import java.util.UUID
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import japgolly.scalajs.react.ReactDOM
-
-import spgui.SPWidget
 import spgui.widgets.css.{WidgetStyles => Styles}
-import spgui.communication._
 
-import sp.domain._
-import sp.domain.Logic._
-
-import org.singlespaced.d3js.d3
-import org.singlespaced.d3js.Ops._
-
-import scala.concurrent.duration._
-import scala.scalajs.js
-import scala.util.{ Try, Success }
-import scala.util.Random.nextInt
-
-import org.scalajs.dom
 import org.scalajs.dom.raw
 import org.scalajs.dom.{svg => *}
 import org.singlespaced.d3js.d3
@@ -42,23 +26,7 @@ object TriageWidget {
 private class Backend($: BackendScope[String, Map[String, apiPatient.Patient]]) {
 
  var patientObs = Option.empty[rx.Obs]
-  def setPatientObs(): Unit = {
-    patientObs = Some(spgui.widgets.akuten.PatientModel.getPatientObserver{
-          println("are we here?")
-      patients => $.setState(patients).runNow()
-    })
-  }
- //spgui.widgets.css.WidgetStyles.addToDocument()
 
-  val wsObs = BackendCommunication.getWebSocketStatusObserver(  mess => {
-    if (mess) send(api.GetState())
-  }, "patient-cards-widget-topic")
-
-  def send(mess: api.Event) {
-    val h = SPHeader(from = "MedicineYellowTriageWidget", to = "TriageDiagramService")
-    val json = ToAndFrom.make(h, mess)
-    BackendCommunication.publish(json, "triage-diagram-service-topic")
-  }
 
   def render(p: String, s: Map[String, apiPatient.Patient]) = {
     <.div(Styles.helveticaZ)
@@ -67,7 +35,6 @@ private class Backend($: BackendScope[String, Map[String, apiPatient.Patient]]) 
   def onUnmount() = {
     println("Unmounting")
     patientObs.foreach(_.kill())
-    wsObs.kill()
     Callback.empty
   }
 }
@@ -76,7 +43,7 @@ private val component = ScalaComponent.builder[String]("teamVBelastning")
 .initialState(Map("-1" ->
   EricaLogic.dummyPatient))
 .renderBackend[Backend]
-.componentDidMount(ctx => Callback(ctx.backend.setPatientObs()))
+.componentDidMount(ctx => Callback.log("triage mounted"))
 .componentDidUpdate(ctx => Callback(addTheD3(ctx.getDOMNode, ctx.currentState, ctx.currentProps)))
 .componentWillUnmount(_.backend.onUnmount())
 .build
