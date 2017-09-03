@@ -1,10 +1,6 @@
 package spgui.widgets.akuten
 
-import spgui.communication.BackendCommunication
-import spgui.widgets.{API_Patient, API_PatientEvent, ToAndFrom}
-
-import sp.domain._
-import Logic._
+import spgui.widgets.API_Patient
 
 /**
   * Created by kristofer on 2017-05-02.
@@ -15,21 +11,6 @@ object PatientModel {
 
   val model = new PatienModel
 
-
-  def getPatientObserver(callBack: (Map[String, API_Patient.Patient]) => Unit): rx.Obs = {
-    model.pats.foreach(callBack)
-  }
-
-  val wsObs = BackendCommunication.getWebSocketStatusObserver(  mess => {
-    if (mess) send(API_PatientEvent.GetState())
-  }, "patient-cards-widget-topic")
-
-  def send(mess: API_PatientEvent.Event) {
-    val json = ToAndFrom.make(SPHeader(from = "Frontend", to = "WidgetService"), mess)
-    BackendCommunication.publish(json, "widget-event")
-  }
-
-
 }
 
 class PatienModel {
@@ -39,16 +20,6 @@ class PatienModel {
   val upd = Var(Map[String, API_Patient.Patient]())
   val pats = Var(Map[String, API_Patient.Patient]())
   val prev = Var(Map[String, API_Patient.Patient]())
-
-  val messObs = BackendCommunication.getMessageObserver(
-    mess => {
-      ToAndFrom.eventBody(mess).map {
-        case API_PatientEvent.State(patients) =>
-          upd() = patients
-        case _ => println("something else in PatientModel: " + mess)
-      }
-    }
-    , "patient-cards-widget-topic")
 
   val checkPrev = Rx {
     val u = upd()
