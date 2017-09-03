@@ -10,8 +10,8 @@ import spgui.menu.SPMenu
 import spgui.dashboard.Dashboard
 
 object Layout {
-  val widgetsConnection = SPGUICircuit.connect(x => (x.openWidgets.xs, x.toString))
-  val menuConnection = SPGUICircuit.connect(x => (x.settings))
+  val widgetsConnection = SPGUICircuit.connect(x => (x.openWidgets.xs, x.globalState))
+  val menuConnection = SPGUICircuit.connect(x => x.settings)
 
   val component = ScalaComponent.builder[Unit]("Layout")
     .render(_ =>
