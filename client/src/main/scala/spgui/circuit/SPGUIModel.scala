@@ -6,19 +6,27 @@ import spgui.theming.Theming.Theme
 
 // state
 case class SPGUIModel(
-  openWidgets: OpenWidgets = OpenWidgets(),
-  widgetData: WidgetData = WidgetData(Map()),
-  settings: Settings = Settings()
-)
+                       openWidgets: OpenWidgets = OpenWidgets(),
+                       globalState: GlobalState = GlobalState(),
+                       widgetData: WidgetData = WidgetData(Map()),
+                       settings: Settings = Settings()
+                     )
 case class OpenWidgets(xs: Map[UUID, OpenWidget] = Map())
 case class OpenWidget(id: UUID, layout: WidgetLayout, widgetType: String)
 case class WidgetLayout(x: Int, y: Int, w: Int, h: Int, collapsedHeight: Int = 1)
-case class WidgetData(xs: Map[UUID, Unit])
+case class WidgetData(xs: Map[UUID, String])
+
+case class GlobalState(
+                        currentModel: Option[UUID] = None,
+                        selectedItems: List[UUID] = List(),
+                        userID: Option[UUID] = None,
+                        clientID: UUID = UUID.randomUUID()
+                      )
 
 case class Settings(
-  theme: Theme = Theme(),
-  showHeaders: Boolean = true 
-)
+                     theme: Theme = Theme(),
+                     showHeaders: Boolean = true
+                   )
 
 
 
@@ -28,9 +36,10 @@ case class AddWidget(widgetType: String, width: Int = 2, height: Int = 2, id: UU
 case class CloseWidget(id: UUID) extends Action
 case class CollapseWidgetToggle(id: UUID) extends Action
 case object CloseAllWidgets extends Action
-case class UpdateWidgetData(id: UUID, data: String) extends Action
+case class UpdateWidgetData(id: UUID, str: String) extends Action
 case class UpdateLayout(id: UUID, newLayout: WidgetLayout) extends Action
 case class SetLayout(layout: Map[UUID, WidgetLayout]) extends Action
+case class UpdateGlobalState(state: GlobalState) extends Action
 case class SetTheme(theme: Theme) extends Action
 case object ToggleHeaders extends Action
 
